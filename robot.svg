@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <style>
+      .robot-body { fill: #4a4a4a; stroke: #2a2a2a; stroke-width: 2; }
+      .robot-head { fill: #5a5a5a; stroke: #2a2a2a; stroke-width: 2; }
+      .robot-eyes { fill: #00ff00; }
+      .robot-antenna { stroke: #2a2a2a; stroke-width: 2; }
+    </style>
+  </defs>
+  
+  <!-- Body -->
+  <rect class="robot-body" x="30" y="50" width="40" height="35" rx="3"/>
+  
+  <!-- Head -->
+  <rect class="robot-head" x="25" y="15" width="50" height="35" rx="4"/>
+  
+  <!-- Left Eye -->
+  <circle class="robot-eyes" cx="38" cy="28" r="5"/>
+  
+  <!-- Right Eye -->
+  <circle class="robot-eyes" cx="62" cy="28" r="5"/>
+  
+  <!-- Left Antenna -->
+  <line class="robot-antenna" x1="35" y1="15" x2="30" y2="5"/>
+  <circle fill="#00ff00" cx="30" cy="5" r="2"/>
+  
+  <!-- Right Antenna -->
+  <line class="robot-antenna" x1="65" y1="15" x2="70" y2="5"/>
+  <circle fill="#00ff00" cx="70" cy="5" r="2"/>
+  
+  <!-- Mouth -->
+  <line stroke="#2a2a2a" stroke-width="2" x1="42" y1="40" x2="58" y2="40"/>
+  
+  <!-- Left Arm -->
+  <rect class="robot-body" x="15" y="58" width="12" height="28" rx="2"/>
+  
+  <!-- Right Arm -->
+  <rect class="robot-body" x="73" y="58" width="12" height="28" rx="2"/>
+  
+  <!-- Left Leg -->
+  <rect class="robot-body" x="35" y="85" width="8" height="12" rx="2"/>
+  
+  <!-- Right Leg -->
+  <rect class="robot-body" x="57" y="85" width="8" height="12" rx="2"/>
+</svg>
