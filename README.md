@@ -11,7 +11,7 @@ An experimental electronic collective based in Brighton, UK, dedicated to pushin
 
 - **Framework**: React + Vite
 - **Graphics**: WebGL shaders for generative morphing visuals
-- **Deployment**: GitHub Pages (static site)
+
 
 ## Development
 
@@ -19,6 +19,3 @@ An experimental electronic collective based in Brighton, UK, dedicated to pushin
 2. Start dev server: `npm run dev`
 3. Build for production: `npm run build`
 
-## Deployment
-
-Push to the `main` branch to deploy via GitHub Pages.
