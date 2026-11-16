@@ -114,15 +114,8 @@ function PsyShader() {
   return (
     <canvas
       ref={canvasRef}
-      style={{
-        width: "100vw",
-        height: "100vh",
-        display: "block",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: -1,
-      }}
+      className="shader-canvas"
+      aria-hidden="true"
     />
   );
 }
