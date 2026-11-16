@@ -86,6 +86,14 @@ function PsyShader() {
     const timeLoc = gl.getUniformLocation(program, "u_time");
     const resLoc = gl.getUniformLocation(program, "u_resolution");
 
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
     let running = true;
     function render(t) {
       if (!running) return;
@@ -99,14 +107,13 @@ function PsyShader() {
 
     return () => {
       running = false;
+      window.removeEventListener("resize", resize);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      width={window.innerWidth}
-      height={window.innerHeight}
       style={{
         width: "100vw",
         height: "100vh",
