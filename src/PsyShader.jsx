@@ -10,28 +10,33 @@ void main() {
 `;
 
 const FRAG_100 = `precision mediump float;
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#endif
 uniform float u_time;
 uniform vec2 u_resolution;
 
+// mediump-safe hash: the classic 43758.5453 IQ constant overflows
+// mediump (range ~2^15) and goes flat black on WebKit/iOS GPUs.
 float hash(vec2 p) {
-  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+  return fract(sin(dot(p, vec2(12.9898, 78.233))) * 437.5453);
 }
 
 void main() {
-  vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+  vec2 uv = gl_FragCoord.xy / max(u_resolution, vec2(1.0));
   float aspect = u_resolution.x / max(u_resolution.y, 1.0);
   uv.x *= aspect;
 
-  float gridSize = mix(20.0, 80.0, hash(vec2(u_time, 0.0)));
+  float gridSize = mix(20.0, 80.0, hash(vec2(floor(u_time * 2.0), 0.0)));
   vec2 grid = floor(uv * gridSize);
   float cell = hash(grid + floor(u_time * 2.0));
-  float glitch = step(0.85, cell);
+  float glitch = step(0.72, cell);
 
   float flash = step(0.98, hash(vec2(floor(u_time * 3.0), 99.0)));
   float flash2 = step(0.995, hash(vec2(floor(u_time * 7.0), 199.0)));
-  float flicker = step(0.5, fract(sin(u_time * 10.0 + uv.x * 100.0) * 10000.0));
+  float flicker = step(0.45, fract(sin(u_time * 10.0 + uv.x * 40.0) * 437.5453));
 
-  vec3 color = mix(vec3(0.05), vec3(1.0), glitch * flicker);
+  vec3 color = mix(vec3(0.07), vec3(1.0), glitch * flicker);
   color = mix(color, vec3(1.0), flash);
   color = mix(color, vec3(0.0), flash2);
 
@@ -48,30 +53,34 @@ void main() {
 `;
 
 const FRAG_300 = `#version 300 es
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
 precision mediump float;
+#endif
 uniform float u_time;
 uniform vec2 u_resolution;
 out vec4 outColor;
 
 float hash(vec2 p) {
-  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+  return fract(sin(dot(p, vec2(12.9898, 78.233))) * 437.5453);
 }
 
 void main() {
-  vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+  vec2 uv = gl_FragCoord.xy / max(u_resolution, vec2(1.0));
   float aspect = u_resolution.x / max(u_resolution.y, 1.0);
   uv.x *= aspect;
 
-  float gridSize = mix(20.0, 80.0, hash(vec2(u_time, 0.0)));
+  float gridSize = mix(20.0, 80.0, hash(vec2(floor(u_time * 2.0), 0.0)));
   vec2 grid = floor(uv * gridSize);
   float cell = hash(grid + floor(u_time * 2.0));
-  float glitch = step(0.85, cell);
+  float glitch = step(0.72, cell);
 
   float flash = step(0.98, hash(vec2(floor(u_time * 3.0), 99.0)));
   float flash2 = step(0.995, hash(vec2(floor(u_time * 7.0), 199.0)));
-  float flicker = step(0.5, fract(sin(u_time * 10.0 + uv.x * 100.0) * 10000.0));
+  float flicker = step(0.45, fract(sin(u_time * 10.0 + uv.x * 40.0) * 437.5453));
 
-  vec3 color = mix(vec3(0.05), vec3(1.0), glitch * flicker);
+  vec3 color = mix(vec3(0.07), vec3(1.0), glitch * flicker);
   color = mix(color, vec3(1.0), flash);
   color = mix(color, vec3(0.0), flash2);
 
@@ -200,7 +209,7 @@ function startWebGL(canvas) {
     draw(timeMs) {
       const { w, h } = sizeCanvas(canvas);
       gl.viewport(0, 0, w, h);
-      gl.uniform1f(timeLoc, timeMs * 0.001);
+      gl.uniform1f(timeLoc, (timeMs * 0.001) % 180.0);
       gl.uniform2f(resLoc, w, h);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     },

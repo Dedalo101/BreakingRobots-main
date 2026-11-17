@@ -33,26 +33,31 @@ html {
   background-color: #111;
 }
 
-body {
-  overflow-x: hidden;
-}
-
+/* Do not put overflow on html/body: in WebKit that makes
+   position:fixed descendants use the body as a containing block. */
 #root {
   position: relative;
   z-index: 1;
   min-height: 100vh;
   background: transparent;
+  overflow-x: hidden;
 }
 
 .shader-canvas {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 0;
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   pointer-events: none;
   background: #111;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 /* Animated CSS fallback if even a 2D canvas cannot be created. */
